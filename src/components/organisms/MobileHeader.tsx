@@ -1,4 +1,4 @@
-import { Calculator, Menu } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import logo from '../../assets/logo.png';
 
 export const MobileHeader = ({ onMenuToggle }: any) => (
