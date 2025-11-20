@@ -1,0 +1,16 @@
+/* Estilos que se aplican SOLO al imprimir */
+@media print {
+
+  /* Oculta la barra lateral, el header y los botones */
+  .sidebar,
+  .mobile-header,
+  .action-buttons {
+    display: none;
+  }
+
+  /* Asegúrate de que el contenido principal ocupe todo el espacio */
+  .main-content {
+    margin: 0;
+    padding: 0;
+  }
+}

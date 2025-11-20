@@ -1,14 +1,17 @@
 import { useState, useMemo } from 'react';
 import { DollarSign, Briefcase, Percent } from 'lucide-react';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 import { calcularISRGeneral } from '../lib/calculations';
 import { TARIFA_MENSUAL_2025 } from '../lib/constants';
 import { formatMoney } from '../lib/formatters';
+import { exportToCsv } from '../lib/utils';
 import { CurrencyInput } from '../components/ui/CurrencyInput';
 import { SegmentedControl } from '../components/ui/SegmentedControl';
 import { ResultBox } from '../components/ui/ResultBox';
 import { StatCard } from '../components/ui/StatCard';
 import { Row } from '../components/ui/Row';
 import { EmptyState } from '../components/ui/EmptyState';
+import { ISRPdf } from './ISRPdf';
 
 export const ISRView = () => {
   const [ingreso, setIngreso] = useState<string>('');
@@ -26,6 +29,22 @@ export const ISRView = () => {
     return res;
   }, [ingreso, periodo]);
 
+  const handleExportCsv = () => {
+    if (!resultado) return;
+    const headers = ['Concepto', 'Monto'];
+    const rows = [
+      ['Ingreso Bruto', resultado.baseGravable],
+      ['Límite Inferior', resultado.limiteInferior],
+      ['Excedente', resultado.excedente],
+      ['Porcentaje Aplicable', `${resultado.porcentajeAplicable}%`],
+      ['Impuesto Marginal', resultado.impuestoMarginal],
+      ['Cuota Fija', resultado.cuotaFija],
+      ['ISR Determinado', resultado.isrDeterminado],
+      ['Ingreso Neto', resultado.ingresoNeto],
+    ];
+
+    exportToCsv('Calculo_ISR.csv', headers, rows);
+  };
   return (
     <div className="grid lg:grid-cols-12 gap-8 animate-in slide-in-from-bottom-4 fade-in duration-500">
       {/* Columna Input */}
@@ -44,18 +63,34 @@ export const ISRView = () => {
         </div>
 
         {resultado && (
-          <ResultBox
-            label="Neto a Pagar"
-            amount={formatMoney(resultado.ingresoNeto)}
-            color="[#004aad]"
-            subLabel={
-              <>
-                <span className="text-white/70">ISR Retenido</span>
-                <span className="font-bold">{formatMoney(resultado.isrDeterminado)}</span>
-              </>
-            }
-          />
+          <>
+            <ResultBox
+              label="Neto a Pagar"
+              amount={formatMoney(resultado.ingresoNeto)}
+              color="[#004aad]"
+              subLabel={
+                <>
+                  <span className="text-white/70">ISR Retenido</span>
+                  <span className="font-bold">{formatMoney(resultado.isrDeterminado)}</span>
+                </>
+              }
+            />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 action-buttons">
+              <PDFDownloadLink
+                document={<ISRPdf resultado={resultado} periodo={periodo} />}
+                fileName={`Calculo_ISR_${periodo}.pdf`}
+                className='bg-[#004aad] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#004aad]/80 text-center'
+              >
+                {({ loading }) => (loading ? 'Generando PDF...' : 'Imprimir / Guardar PDF')}
+              </PDFDownloadLink>
+
+              <button className='bg-[#33ade9] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#17a2b8]/80' onClick={handleExportCsv}>
+                Guardar como CSV
+              </button>
+            </div>
+          </>
         )}
+
       </div>
 
       {/* Columna Output */}
