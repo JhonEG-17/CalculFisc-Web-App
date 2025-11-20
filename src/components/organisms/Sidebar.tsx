@@ -19,10 +19,10 @@ const SidebarItem = ({ id, label, icon: Icon, active, onClick, color = 'slate' }
 
 export const Sidebar = ({ currentView, onViewChange }: any) => (
   <aside className="hidden md:flex w-64 bg-white border-r border-slate-200 flex-col sticky top-0 h-screen z-10">
-    <div className="p-6 border-b border-slate-100">
-      <h1 className="font-bold text-xl tracking-tight flex items-center gap-3">
+    <div className="bg-[#004aad] p-6 border-b border-slate-100">
+      <h1 className="font-bold text-xl text-white tracking-tight flex items-center gap-3">
         <img src={logo} alt="Logo CalculFisc" className="h-10 w-10" width={25} height={25} />
-        <span>CalculFisc<span className="text-[#004aad]"> App</span></span>
+        <span>CalculFisc<span className="text-white"> App</span></span>
       </h1>
     </div>
     <nav className="p-4 space-y-2 flex-1">
@@ -33,7 +33,7 @@ export const Sidebar = ({ currentView, onViewChange }: any) => (
     <div className="p-4">
       <div className="bg-slate-50 p-3 rounded-lg border border-slate-100 text-xs text-slate-500">
         <p className="font-semibold text-slate-700 mb-1">Tablas 2025</p>
-        Actualizadas DOF Anexo 8
+        <a href="https://sidof.segob.gob.mx/notas/5746354" target="_blank" rel="noopener noreferrer">Actualizadas DOF Anexo 8</a>
       </div>
     </div>
   </aside>
