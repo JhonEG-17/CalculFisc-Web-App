@@ -1,5 +1,5 @@
 import { Menu } from 'lucide-react';
-import logo from '../../assets/logo.png';
+import logo from '/src/assets/logo.png';
 
 export const MobileHeader = ({ onMenuToggle }: any) => (
   <header className="md:hidden bg-[#004aad] border-b border-slate-200 p-4 flex justify-between items-center sticky top-0 z-20">
