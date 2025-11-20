@@ -1,5 +1,5 @@
 import { Home, Briefcase, Percent } from 'lucide-react';
-import logo from '/src/assets/logo.png';
+import logo from '/logo.webp';
 
 const SidebarItem = ({ id, label, icon: Icon, active, onClick, color = 'slate' }: any) => {
   const activeClass = active
